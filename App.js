@@ -1,11 +1,10 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
-import Decks from './components/Decks';
-import Deck from './components/Deck';
-import AddDeck from './components/AddDeck';
-import AddCard from './components/AddCard';
-import Quiz from './components/Quiz';
-import DataStore from './data/DataStore';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+import reducer from './reducers/index';
+import Navigator from './Navigator';
 
 // Allow users to create a deck which can hold an unlimited number of cards.
 // Allow users to add a card to a specific deck.
@@ -14,12 +13,30 @@ import DataStore from './data/DataStore';
 // Users should be able to quiz themselves on a specific deck and receive a score once they're done.
 // Users should receive a notification to remind themselves to study if they haven't already for that day.
 
-const App = createStackNavigator({
-  Decks: { screen: Decks },
-  Deck: { screen: Deck },
-  AddDeck: { screen: AddDeck },
-  AddCard: { screen: AddCard },
-  Quiz: { screen: Quiz },
+const loggerMiddleware = createLogger({
+  predicate: (getState, action) => __DEV__
 });
 
-export default App;
+const configureStore = (initialState) =>
+  createStore(
+    reducer,
+    initialState,
+    compose(
+      applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware))
+  );
+
+export default class App extends Component {
+
+  store = configureStore({ decks: {} });
+
+  render() {    
+    return (
+      <Provider store={this.store}>
+        <Navigator />
+      </Provider>
+    );
+  }
+
+}

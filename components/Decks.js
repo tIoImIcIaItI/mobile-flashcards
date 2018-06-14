@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
-import DataStore from '../data/DataStore';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
 import DeckSummary from './DeckSummary';
 
 class Decks extends Component {
@@ -8,23 +10,6 @@ class Decks extends Component {
   static navigationOptions = {
     title: 'Decks'
   };
-
-  state = {
-    decks: {}
-  };
-
-  load = () =>
-    DataStore.
-      getDecks().
-      then(decks => this.setState({ decks })).
-      catch(console.error);
-
-  async componentDidMount() { // TODO: remove this once we get redux set up
-    await DataStore.
-      addSampleData().
-      then(() => this.load()).
-      catch(console.error);
-  }
 
   renderItem = ({ item }) => {
     const { navigation } = this.props;
@@ -38,8 +23,12 @@ class Decks extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
-    const { decks } = this.state;
+    const { navigation, decks, getDecks } = this.props;
+
+    console.log('\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
+    console.log(Object.keys(decks));
+    console.log(decks);
+    console.log('\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
 
     const items =
       Object.entries(decks || {}).
@@ -50,7 +39,7 @@ class Decks extends Component {
 
         <Button
           title='Refresh'
-          onPress={() => this.load()}
+          onPress={() => getDecks()}
         />
 
         <Button
@@ -77,4 +66,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Decks;
+const mapStateToProps = (state) => ({
+  decks: state.decks
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(ActionCreators, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Decks);
