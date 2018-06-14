@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
-import DataStore from '../data/data';
+import DataStore from '../data/DataStore';
 import DeckSummary from './DeckSummary';
 
 class Decks extends Component {
@@ -10,11 +10,23 @@ class Decks extends Component {
   };
 
   state = {
-    decks: DataStore.getDecks()
+    decks: {}
   };
 
-  renderItem = ({ item }) => {
+  load = () =>
+    DataStore.
+      getDecks().
+      then(decks => this.setState({ decks })).
+      catch(console.error);
 
+  async componentDidMount() { // TODO: remove this once we get redux set up
+    await DataStore.
+      addSampleData().
+      then(() => this.load()).
+      catch(console.error);
+  }
+
+  renderItem = ({ item }) => {
     const { navigation } = this.props;
     const deck = item.value;
 
@@ -26,16 +38,20 @@ class Decks extends Component {
   };
 
   render() {
-
     const { navigation } = this.props;
     const { decks } = this.state;
 
     const items =
-      Object.entries(decks).
+      Object.entries(decks || {}).
         map(e => ({ key: e[0], value: e[1] }));
 
     return (
       <View style={styles.container}>
+
+        <Button
+          title='Refresh'
+          onPress={() => this.load()}
+        />
 
         <Button
           title='New Deck'

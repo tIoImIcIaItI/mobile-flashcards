@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import DataStore from '../data/data';
+import DataStore from '../data/DataStore';
 
 // An option to enter in the question
 // An option to enter in the answer
@@ -16,7 +16,7 @@ class AddCard extends Component {
 		answer: ''
 	};
 
-	onSubmit = (deck) => {
+	onSubmit = ({ title }) => {
 		const { navigation } = this.props;
 		const { question, answer } = this.state;
 
@@ -24,10 +24,11 @@ class AddCard extends Component {
 			question,
 			answer
 		};
-		
-		DataStore.addCardToDeck(deck.title, card);
 
-		navigation.pop();
+		return DataStore.
+			addCardToDeck(title, card).
+			then(() => navigation.pop()).
+			catch(console.error);
 	};
 
 	render() {

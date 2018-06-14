@@ -16,7 +16,7 @@ class Deck extends Component {
 	render() {
 
 		const { navigation } = this.props;
-		const deck = this.props.navigation.getParam('deck', {});
+		const deck = navigation.getParam('deck', {});
 		const questions = deck.questions || [];
 
 		return (
@@ -24,7 +24,7 @@ class Deck extends Component {
 
 				<Text>{deck.title}</Text>
 
-				<Text>{questions.length} question{questions.length !== 1 && 's'}</Text>
+				<Text>{questions.length} card{questions.length !== 1 && 's'}</Text>
 
 				<Button
 					title='Start Quiz'

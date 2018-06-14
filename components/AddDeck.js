@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import DataStore from '../data/data';
+import DataStore from '../data/DataStore';
 
 // An option to enter in the title for the new deck
 // An option to submit the new deck title
@@ -15,15 +15,14 @@ class AddDeck extends Component {
 	};
 
 	onSubmit = () => {
-
 		const { navigation } = this.props;
 		const { title } = this.state;
 
-		DataStore.saveDeckTitle(title);
-
-		const deck = DataStore.getDeck(title);
-
-		navigation.replace('Deck', { deck });
+		return DataStore.
+			saveDeckTitle(title).
+			then(() => DataStore.getDeck(title)).
+			then(deck => navigation.replace('Deck', { deck })).
+			catch(console.error);
 	};
 
 	render() {
