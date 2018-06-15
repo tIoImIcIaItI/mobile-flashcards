@@ -3,3 +3,4 @@ export const DECK_ADDED = 'DECK_ADDED';
 export const CARD_ADDED = 'CARD_ADDED';
 
 export const QUIZ_STARTED = 'QUIZ_STARTED';
+export const QUIZ_COMPLETED = 'QUIZ_COMPLETED';

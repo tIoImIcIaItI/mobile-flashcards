@@ -1,4 +1,4 @@
-import { QUIZ_STARTED } from './types';
+import { QUIZ_STARTED, QUIZ_COMPLETED } from './types';
 
 export const startNewQuiz = (deck) => (dispatch) => {
     const quiz = {
@@ -17,6 +17,21 @@ export const startNewQuiz = (deck) => (dispatch) => {
 export function quizStarted(quiz) {
 	return {
 		type: QUIZ_STARTED,
+		quiz
+	};
+}
+
+export const completeQuiz = (results) => (dispatch) => {
+    const quiz = {
+        ...results,
+		completedOn: Date.now()
+    };
+	dispatch(quizCompleted(quiz));
+}
+
+export function quizCompleted(quiz) {
+	return {
+		type: QUIZ_COMPLETED,
 		quiz
 	};
 }

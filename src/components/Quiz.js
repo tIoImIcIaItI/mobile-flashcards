@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import QuizCard from './QuizCard';
 
@@ -22,12 +24,19 @@ class Quiz extends Component {
 		title: `${navigation.getParam('deck', {}).title} Quiz`
 	});
 
+	completeQuiz = (results) => {
+		this.props.completeQuiz(results);
+	};
+
 	correct = () => {
 		const { deck, totalCardNumbers } = this.state;
 		let { curCard, curCardNumber, numCorrect, numAnswered } = this.state;
 
 		numCorrect += 1;
 		numAnswered +=1;
+
+		const percentCorrect = numCorrect / numAnswered * 100.0;
+		const percentComplete = numAnswered / totalCardNumbers * 100.0;
 
 		if (curCardNumber < totalCardNumbers) {
 
@@ -36,8 +45,7 @@ class Quiz extends Component {
 
 			this.setState({
 				curCard, curCardNumber, numCorrect, numAnswered, 
-				percentCorrect: numCorrect / numAnswered * 100.0,
-				percentComplete: numAnswered / totalCardNumbers * 100.0,
+				percentCorrect, percentComplete,
 			});
 		} else {
 
@@ -45,10 +53,13 @@ class Quiz extends Component {
 
 			this.setState({
 				curCard, curCardNumber, numCorrect, numAnswered, 
-				percentCorrect: numCorrect / numAnswered * 100.0,
-				percentComplete: numAnswered / totalCardNumbers * 100.0,
+				percentCorrect, percentComplete,
 			});
-			// TODO: complete quiz
+			
+			this.completeQuiz({
+				title: deck.title,
+				percentCorrect
+			});
 		}
 	};
 
@@ -58,6 +69,9 @@ class Quiz extends Component {
 
 		numAnswered +=1;
 
+		const percentCorrect = numCorrect / numAnswered * 100.0;
+		const percentComplete = numAnswered / totalCardNumbers * 100.0;
+
 		if (curCardNumber < totalCardNumbers) {
 
 			curCardNumber += 1;
@@ -65,8 +79,7 @@ class Quiz extends Component {
 
 			this.setState({
 				curCard, curCardNumber, numAnswered, 
-				percentCorrect: numCorrect / numAnswered * 100.0,
-				percentComplete: numAnswered / totalCardNumbers * 100.0,
+				percentCorrect, percentComplete,
 			});
 		} else {
 
@@ -74,10 +87,13 @@ class Quiz extends Component {
 
 			this.setState({
 				curCard, curCardNumber, numCorrect, numAnswered, 
-				percentCorrect: numCorrect / numAnswered * 100.0,
-				percentComplete: numAnswered / totalCardNumbers * 100.0,
+				percentCorrect, percentComplete,
 			});
-			// TODO: complete quiz
+
+			this.completeQuiz({
+				title: deck.title,
+				percentCorrect
+			});
 		}
 	};
 
@@ -119,5 +135,8 @@ class Quiz extends Component {
 const mapStateToProps = (state, { navigation }) => ({
 	current: (state.quizes || {}).current
 });
-  
-export default connect(mapStateToProps, null)(Quiz);
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(ActionCreators, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
