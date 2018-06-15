@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import { bindActionCreators } from 'redux';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import { ActionCreators } from '../actions/index';
 import DeckSummary from './DeckSummary';
 
@@ -17,6 +17,7 @@ class Decks extends Component {
 
     return (
       <DeckSummary
+        key={deck.title}
         deck={deck}
         onView={() => navigation.navigate('Deck', { deck })}
       />);
@@ -31,11 +32,6 @@ class Decks extends Component {
 
     return (
       <View style={styles.container}>
-
-        <Button
-          title='Refresh'
-          onPress={() => getDecks()}
-        />
 
         <Button
           title='New Deck'
@@ -56,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import DataStore from '../data/DataStore';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
+import { StyleSheet, View, Button, TextInput } from 'react-native';
 
 // An option to enter in the title for the new deck
 // An option to submit the new deck title
@@ -15,12 +17,10 @@ class AddDeck extends Component {
 	};
 
 	onSubmit = () => {
-		const { navigation } = this.props;
+		const { newDeck, navigation } = this.props;
 		const { title } = this.state;
 
-		return DataStore.
-			saveDeckTitle(title).
-			then(() => DataStore.getDeck(title)).
+		return newDeck(title).
 			then(deck => navigation.replace('Deck', { deck })).
 			catch(console.error);
 	};
@@ -58,4 +58,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default AddDeck;
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(ActionCreators, dispatch);
+
+export default connect(null, mapDispatchToProps)(AddDeck);

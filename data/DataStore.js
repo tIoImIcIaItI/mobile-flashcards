@@ -12,7 +12,14 @@ const objectFromKeyValues = (entries) =>
 const parseValue = (kvp = ['', '']) =>
 	[kvp[0], JSON.parse(kvp[1])]
 
+
 class DataStore {
+
+	// Returns a promise to all key/value pairs in the store
+	static getAll = () => 
+		AsyncStorage.
+			getAllKeys().
+			then(keys => AsyncStorage.multiGet(keys));
 
 	static addSampleData = () =>
 		AsyncStorage.
@@ -33,9 +40,8 @@ class DataStore {
 
 	// Return all of the decks along with their titles, questions, and answers. 
 	static getDecks = () =>
-		AsyncStorage.
-			getAllKeys().
-			then(keys => AsyncStorage.multiGet(keys)).
+		DataStore.
+			getAll().
 			then(kvps => kvps.map(parseValue)).
 			then(objectFromKeyValues).
 			catch(console.error);

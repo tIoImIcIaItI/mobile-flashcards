@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import AddCard from './AddCard';
-import Quiz from './Quiz';
 
 // displays the title of the Deck
 // displays the number of cards in the deck
@@ -9,14 +8,13 @@ import Quiz from './Quiz';
 // An option to add a new question to the deck
 class Deck extends Component {
 
-	static navigationOptions = {
-		title: 'Deck'
-	};
+	static navigationOptions = ({ navigation }) => ({
+		title: navigation.getParam('deck', {}).title
+	});
 
 	render() {
-
 		const { navigation } = this.props;
-		const deck = navigation.getParam('deck', {});
+		const { deck } = this.props;
 		const questions = deck.questions || [];
 
 		return (
@@ -43,9 +41,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		alignItems: 'center',
+		alignItems: 'stretch',
 		// justifyContent: 'center',
 	},
 });
 
-export default Deck;
+const mapStateToProps = (state, { navigation }) => ({
+	deck: (state.decks || {}).decks[navigation.getParam('deck', {}).title] 
+});
+  
+export default connect(mapStateToProps, null)(Deck);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import DataStore from '../data/DataStore';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
+import { StyleSheet, View, Button, TextInput } from 'react-native';
 
 // An option to enter in the question
 // An option to enter in the answer
@@ -25,8 +27,7 @@ class AddCard extends Component {
 			answer
 		};
 
-		return DataStore.
-			addCardToDeck(title, card).
+		return this.props.addCardToDeck(title, card).
 			then(() => navigation.pop()).
 			catch(console.error);
 	};
@@ -72,4 +73,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default AddCard;
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(ActionCreators, dispatch);
+
+export default connect(null, mapDispatchToProps)(AddCard);
