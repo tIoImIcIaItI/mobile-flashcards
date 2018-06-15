@@ -25,11 +25,6 @@ class Decks extends Component {
   render() {
     const { navigation, decks, getDecks } = this.props;
 
-    console.log('\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
-    console.log(Object.keys(decks));
-    console.log(decks);
-    console.log('\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
-
     const items =
       Object.entries(decks || {}).
         map(e => ({ key: e[0], value: e[1] }));
@@ -67,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  decks: state.decks
+  decks: (state.decks || {}).decks
 });
 
 const mapDispatchToProps = (dispatch) =>
