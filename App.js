@@ -32,7 +32,7 @@ const configureStore = (initialState) =>
 
 export default class App extends Component {
 
-  store = configureStore({ decks: {} });
+  store = configureStore({ });
 
   render() {
     return (
