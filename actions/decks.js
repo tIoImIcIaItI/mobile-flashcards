@@ -2,9 +2,7 @@ import DataStore from '../data/DataStore';
 import { DECKS_LOADED } from './types';
 
 export const getDecks = () => (dispatch) => 
-	DataStore.
-		addSampleData().
-		then(() => DataStore.getDecks()).
+	DataStore.getDecks().
 		then(decks => dispatch(decksLoaded(decks))).
 		catch(console.error);
 

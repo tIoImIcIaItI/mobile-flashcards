@@ -5,6 +5,10 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import reducer from './reducers/index';
 import Navigator from './Navigator';
+import DataStore from './data/DataStore';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from './actions/index';
 
 // Allow users to create a deck which can hold an unlimited number of cards.
 // Allow users to add a card to a specific deck.
@@ -27,14 +31,36 @@ const configureStore = (initialState) =>
         loggerMiddleware))
   );
 
+class InitApp extends Component {
+
+  componentDidMount() {
+    DataStore.
+      addSampleData().
+      then(this.props.getDecks).
+      catch(console.error);
+  }
+
+  render() {
+    return (
+       <Navigator />
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(ActionCreators, dispatch);
+
+const ConnectedInitApp = connect(null, mapDispatchToProps)(InitApp);
+
+
 export default class App extends Component {
 
-  store = configureStore({ decks: {} });
+  store = configureStore({ });
 
   render() {    
     return (
       <Provider store={this.store}>
-        <Navigator />
+        <ConnectedInitApp />
       </Provider>
     );
   }
