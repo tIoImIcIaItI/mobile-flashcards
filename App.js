@@ -5,7 +5,6 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import reducer from './reducers/index';
 import AppInit from './AppInit';
-import DataStore from './data/DataStore';
 
 // Allow users to create a deck which can hold an unlimited number of cards.
 // Allow users to add a card to a specific deck.
@@ -27,8 +26,6 @@ const configureStore = (initialState) =>
         thunkMiddleware,
         loggerMiddleware))
   );
-
-(async () => { await DataStore.addSampleData(); })();
 
 export default class App extends Component {
 

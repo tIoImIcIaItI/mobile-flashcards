@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from './actions/index';
 import Navigator from './Navigator';
+import DataStore from './data/DataStore';
 
 class AppInit extends Component {
 
     componentDidMount() {
-        this.props.getDecks();
+        DataStore.
+            addSampleData().
+            then(() => this.props.getDecks()).
+            catch(console.error);
     }
 
     render() {
