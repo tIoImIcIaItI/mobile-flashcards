@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import reducer from './reducers/index';
-import AppInit from './AppInit';
+import reducer from './src/reducers/index';
+import AppInit from './src/components/AppInit';
 
 // Allow users to create a deck which can hold an unlimited number of cards.
 // Allow users to add a card to a specific deck.

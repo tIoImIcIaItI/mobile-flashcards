@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ActionCreators } from './actions/index';
+import { ActionCreators } from '../actions/index';
 import Navigator from './Navigator';
-import DataStore from './data/DataStore';
+import DataStore from '../data/DataStore';
 
 class AppInit extends Component {
 
