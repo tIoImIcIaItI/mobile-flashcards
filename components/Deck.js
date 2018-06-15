@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 // displays the title of the Deck
@@ -11,6 +13,13 @@ class Deck extends Component {
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.getParam('deck', {}).title
 	});
+
+	startQuiz = (navigation, deck) => {
+		
+		this.props.startNewQuiz(deck);
+
+		navigation.navigate('Quiz', { deck });
+	};
 
 	render() {
 		const { navigation } = this.props;
@@ -26,7 +35,7 @@ class Deck extends Component {
 
 				<Button
 					title='Start Quiz'
-					onPress={() => navigation.navigate('Quiz', { deck })} />
+					onPress={() => this.startQuiz(navigation, deck)} />
 
 				<Button
 					title='Add Card'
@@ -49,5 +58,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, { navigation }) => ({
 	deck: (state.decks || {}).decks[navigation.getParam('deck', {}).title] 
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(ActionCreators, dispatch);
   
-export default connect(mapStateToProps, null)(Deck);
+export default connect(mapStateToProps, mapDispatchToProps)(Deck);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import { ActionCreators } from '../actions/index';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import DeckSummary from './DeckSummary';
 
 class Decks extends Component {
