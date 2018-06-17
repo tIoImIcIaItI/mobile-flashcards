@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
+import { clearNotification } from '../notifications/index';
+import DataStore from '../data/DataStore';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import QuizCard from './QuizCard';
 
@@ -17,15 +19,33 @@ class Quiz extends Component {
 	constructor(props) {
 		super(props);
 	
-		this.state = { ...this.props.current };
+		this.state = 
+			this.buildInitialState(
+				props.current.deck);
 	  }
-	
+
+	buildInitialState = (deck) => ({
+		deck,
+		curCard: deck.questions.length > 0 ? deck.questions[0] : null,
+		curCardNumber: 1,
+		totalCardNumbers: deck.questions.length,
+		numCorrect: 0,
+		numAnswered: 0,
+		percentComplete: 0.0,
+		percentCorrect: 100.0
+	});
+
 	static navigationOptions = ({ navigation }) => ({
 		title: `${navigation.getParam('deck', {}).title} Quiz`
 	});
 
 	completeQuiz = (results) => {
+
+		DataStore.saveQuiz(results);
+
 		this.props.completeQuiz(results);
+
+		clearNotification();
 	};
 
 	correct = () => {
@@ -58,7 +78,8 @@ class Quiz extends Component {
 			
 			this.completeQuiz({
 				title: deck.title,
-				percentCorrect
+				percentCorrect,
+				completedOn: Date.now()
 			});
 		}
 	};
@@ -92,18 +113,23 @@ class Quiz extends Component {
 
 			this.completeQuiz({
 				title: deck.title,
-				percentCorrect
+				percentCorrect,
+				completedOn: Date.now()
 			});
 		}
 	};
 
-	render() {
-		const { current } = this.props;
+	restartQuiz = (deck) => {
+		this.setState(
+			this.buildInitialState(deck));
+	};
 
-		if (!current)
+	render() {
+		if (!this.props.current)
 			return (<View />);
 
 		const { 
+			deck,
 			curCard,
 			curCardNumber,
 			totalCardNumbers,
@@ -113,8 +139,10 @@ class Quiz extends Component {
 		return (
 			<View>
 
-				{/* <Text>{`${current.deck.title}`}</Text> */}
-
+				{curCard && <Button
+					title='Restart Quiz'
+					onPress={() => this.restartQuiz(deck)} />}
+				
 				<Text>{`${curCardNumber} / ${totalCardNumbers}`}</Text>
 				<Text>{`${percentComplete} % complete`}</Text>
 
@@ -124,8 +152,7 @@ class Quiz extends Component {
 					question={curCard.question}
 					answer={curCard.answer}
 					correct={this.correct}
-					incorrect={this.incorrect}					
-				/>}
+					incorrect={this.incorrect} />}
 
 			</View>
 		);

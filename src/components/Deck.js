@@ -22,8 +22,7 @@ class Deck extends Component {
 	};
 
 	render() {
-		const { navigation } = this.props;
-		const { deck } = this.props;
+		const { deck, navigation } = this.props;
 		const questions = deck.questions || [];
 
 		return (
@@ -35,6 +34,7 @@ class Deck extends Component {
 
 				<Button
 					title='Start Quiz'
+					disabled={questions.length < 1}
 					onPress={() => this.startQuiz(navigation, deck)} />
 
 				<Button

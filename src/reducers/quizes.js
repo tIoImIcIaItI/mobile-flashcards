@@ -6,7 +6,7 @@ const quizes = (state = {}, action) => {
 		case QUIZ_STARTED: {
 			return {
 				...state,
-				current: action.quiz
+				current: { deck: action.deck }
 			};
 		}
 		case QUIZ_COMPLETED: {

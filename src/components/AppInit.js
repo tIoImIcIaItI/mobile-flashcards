@@ -4,13 +4,31 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import Navigator from './Navigator';
 import DataStore from '../data/DataStore';
+import { setNotification, clearNotification } from '../notifications/index';
 
 class AppInit extends Component {
 
     componentDidMount() {
+
+        // DataStore.
+        //     addSampleData().
+        //     then(() => this.props.getDecks()).
+        //     catch(console.error);
+        this.props.getDecks();
+
         DataStore.
-            addSampleData().
-            then(() => this.props.getDecks()).
+            hasTakenQuizOn(new Date()).
+            then(answer => {
+                if (!answer) {
+                    const when = Date.now() + (1 * 60 * 1000);
+                    console.log(`setting notification for ${new Date(when)}`);
+                    setNotification(when, 'minute');
+                } else
+                {
+                    console.log('clearing notifications');
+                    clearNotification();
+                }
+            }).
             catch(console.error);
     }
 
