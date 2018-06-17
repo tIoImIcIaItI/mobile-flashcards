@@ -2,27 +2,25 @@
 import { Notifications, Permissions } from 'expo';
 import DataStore from '../data/DataStore';
 
-function createNotification() {
-	return {
-		title: 'TODO: title',
-		body: 'TODO: body',
-		android: {
-			sound: true,
-			priority: 'high',
-			sticky: false,
-			vibrate: true
-		}
-	};
-}
+const createNotification = () => ({
+	title: 'Study Reminder',
+	body: 'Practice makes perfect! Let\'s start a new quiz',
+	android: {
+		sound: true,
+		priority: 'high',
+		sticky: false,
+		vibrate: true
+	}
+});
 
-export function clearNotification() {
+export const clearNotification = () =>
 	DataStore.
 		removeNotification().
-		then(Notifications.cancelAllScheduledNotificationsAsync()).
+		then(() => Notifications.
+			cancelAllScheduledNotificationsAsync()).
 		catch(console.error);
-}
 
-export function setNotification(time, repeat) {
+export const setNotification = (time, repeat) =>
 	DataStore.
 		getNotification().
 		then(data => {
@@ -31,16 +29,17 @@ export function setNotification(time, repeat) {
 					askAsync(Permissions.NOTIFICATIONS).
 					then(({status}) => {
 						if (status === 'granted') {
-							Notifications.cancelAllScheduledNotificationsAsync();
-
-							Notifications.scheduleLocalNotificationAsync(
-								createNotification(),
-								{ time, repeat });
-
-							DataStore.setNotification(true);
+							Notifications.
+								cancelAllScheduledNotificationsAsync().
+								then(() => Notifications.
+									scheduleLocalNotificationAsync(
+										createNotification(),
+										{ time, repeat })
+								).
+								then(() => DataStore.
+									setNotification(true));
 						}
 					})
 			}
 		}).
 		catch(console.error);
-}

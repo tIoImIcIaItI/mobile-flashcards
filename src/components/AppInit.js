@@ -21,11 +21,11 @@ class AppInit extends Component {
             then(answer => {
                 if (!answer) {
                     const when = Date.now() + (1 * 60 * 1000);
-                    console.log(`setting notification for ${new Date(when)}`);
-                    setNotification(when, 'minute');
-                } else
-                {
-                    console.log('clearing notifications');
+                    // console.log(`setting notification for ${new Date(when)}`);
+                    clearNotification().
+                        then(() => setNotification(when, 'day'));
+                } else {
+                    // console.log('clearing notifications');
                     clearNotification();
                 }
             }).
