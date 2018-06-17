@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { Text, View, FlatList, Button } from 'react-native';
 import DeckSummary from './DeckSummary';
+import styles from '../styles/decks';
 
 class Decks extends Component {
 
@@ -34,11 +35,13 @@ class Decks extends Component {
       <View style={styles.container}>
 
         <Button
+          style={styles.newDeck}
           title='New Deck'
           onPress={() => navigation.navigate('AddDeck')}
         />
 
         <FlatList
+          style={styles.decksList}
           data={items}
           renderItem={this.renderItem}
         />
@@ -47,15 +50,6 @@ class Decks extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-});
 
 const mapStateToProps = (state) => ({
   decks: (state.decks || {}).decks

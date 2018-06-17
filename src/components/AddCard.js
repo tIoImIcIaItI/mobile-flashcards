@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
-import { StyleSheet, View, Button, TextInput } from 'react-native';
+import { View, Button, TextInput, Text } from 'react-native';
+import styles from '../styles/add-card';
 
 // An option to enter in the question
 // An option to enter in the answer
@@ -33,17 +34,24 @@ class AddCard extends Component {
 	};
 
 	render() {
-
 		const deck = this.props.navigation.getParam('deck', {});
 
 		return (
 			<View style={styles.container}>
+
+				<Text>
+					Question
+				</Text>
 
 				<TextInput
 					style={styles.input}
 					onChangeText={question => this.setState({ question })}
 					value={this.state.question}
 				/>
+
+				<Text>
+					Answer
+				</Text>
 
 				<TextInput
 					style={styles.input}
@@ -60,18 +68,6 @@ class AddCard extends Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		// alignItems: 'center',
-		// justifyContent: 'center',
-	},
-	input: {
-		height: 40
-	},
-});
 
 const mapDispatchToProps = (dispatch) =>
 	bindActionCreators(ActionCreators, dispatch);

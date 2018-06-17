@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
-import { StyleSheet, View, Button, TextInput } from 'react-native';
+import { View, Button, TextInput, Text } from 'react-native';
+import styles from '../styles/add-deck';
 
 // An option to enter in the title for the new deck
 // An option to submit the new deck title
@@ -28,7 +29,11 @@ class AddDeck extends Component {
 	render() {
 
 		return (
-			<View>
+			<View style={styles.container}>
+
+				<Text>
+					Title
+				</Text>
 
 				<TextInput
 					style={styles.input}
@@ -45,18 +50,6 @@ class AddDeck extends Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	input: {
-		height: 40
-	},
-});
 
 const mapDispatchToProps = (dispatch) =>
 	bindActionCreators(ActionCreators, dispatch);

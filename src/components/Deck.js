@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
+import styles from '../styles/deck';
 
 // displays the title of the Deck
 // displays the number of cards in the deck
@@ -28,32 +29,31 @@ class Deck extends Component {
 		return (
 			<View style={styles.container}>
 
-				<Text>{deck.title}</Text>
+				{/*<Text>
+					{deck.title}
+				</Text>*/}
 
-				<Text>{questions.length} card{questions.length !== 1 && 's'}</Text>
+				<Text>
+					{questions.length} card{questions.length !== 1 && 's'}
+				</Text>
 
+				<View style={styles.btn}>
 				<Button
 					title='Start Quiz'
 					disabled={questions.length < 1}
 					onPress={() => this.startQuiz(navigation, deck)} />
+				</View>
 
+				<View style={styles.btn}>
 				<Button
 					title='Add Card'
 					onPress={() => navigation.navigate('AddCard', { deck })} />
+				</View>
 
 			</View>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'stretch',
-		// justifyContent: 'center',
-	},
-});
 
 const mapStateToProps = (state, { navigation }) => ({
 	deck: (state.decks || {}).decks[navigation.getParam('deck', {}).title] 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
+import styles from '../styles/quiz-card';
 
 // displays a card question
 // an option to view the answer (flips the card)
@@ -10,10 +11,10 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 class QuizCard extends Component {
 
     static propTypes = {
+        curCardNumber: PropTypes.number.isRequired,
+        totalCardNumbers: PropTypes.number.isRequired,
         question: PropTypes.string.isRequired,
-        answer: PropTypes.string.isRequired,
-        correct: PropTypes.func.isRequired,
-        incorrect: PropTypes.func.isRequired,
+        answer: PropTypes.string.isRequired
     };
 
     state = {
@@ -30,8 +31,8 @@ class QuizCard extends Component {
         const { showingQuestion } = this.state;
 
 		const { 
-			question, answer,
-            correct, incorrect 
+            curCardNumber, totalCardNumbers,
+			question, answer
         } = this.props;
 
         const content = 
@@ -41,23 +42,19 @@ class QuizCard extends Component {
             showingQuestion ? 'show answer' : 'show question';
 
 		return (
-            <View>
+            <View style={styles.container}>
 
-                <Text>
+                <Text style={styles.progress}>
+                    {`${curCardNumber} / ${totalCardNumbers}`}
+                </Text>
+
+                <Text style={styles.content}>
                     {content}
                 </Text>
 
 				<Button
 					title={title}
 					onPress={() => this.toggleContent()} />
-
-				<Button
-					title='Correct'
-					onPress={() => correct()} />
-
-				<Button
-					title='Incorrect'
-					onPress={() => incorrect()} />
 
 			</View>
 		);

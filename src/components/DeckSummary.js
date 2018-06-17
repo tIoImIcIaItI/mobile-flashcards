@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { Text, View, FlatList, Button } from 'react-native';
+import styles from '../styles/deck-summary';
 
 // displays the title of each Deck
 // displays the number of cards in each deck
@@ -26,22 +27,5 @@ class DeckSummary extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  item: {
-    margin: 10
-  },
-  title: {
-    fontWeight: '500',
-    padding: 10,
-    fontSize: 16,
-    height: 44,
-  },
-  count: {
-    padding: 10,
-    fontSize: 16,
-    height: 44,
-  },
-});
 
 export default DeckSummary;

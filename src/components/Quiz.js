@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import { clearNotification } from '../notifications/index';
 import DataStore from '../data/DataStore';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import QuizCard from './QuizCard';
+import styles from '../styles/quiz';
 
 // displays a card question
 // an option to view the answer (flips the card)
@@ -127,7 +128,7 @@ class Quiz extends Component {
 	render() {
 		if (!this.props.current)
 			return (<View />);
-
+		
 		const { 
 			deck,
 			curCard,
@@ -137,22 +138,37 @@ class Quiz extends Component {
 			percentCorrect } = this.state;
 
 		return (
-			<View>
+			<View style={styles.container}>
 
 				{curCard && <Button
-					title='Restart Quiz'
+					title='Restart'
 					onPress={() => this.restartQuiz(deck)} />}
 				
-				<Text>{`${curCardNumber} / ${totalCardNumbers}`}</Text>
-				<Text>{`${percentComplete} % complete`}</Text>
+				<View style={styles.progressContainer}>
+					<Text>{`${percentComplete} % complete`}</Text>
 
-				<Text>{`${percentCorrect} % correct`}</Text>
+					<Text>{`${percentCorrect} % correct`}</Text>
+				</View>
 
 				{curCard && <QuizCard 
+					curCardNumber={curCardNumber}
+					totalCardNumbers={totalCardNumbers}
 					question={curCard.question}
-					answer={curCard.answer}
-					correct={this.correct}
-					incorrect={this.incorrect} />}
+					answer={curCard.answer} />}
+
+				{curCard && <View style={styles.assessmentContainer}>
+
+					<Button
+						title='Incorrect'
+						color='red'
+						onPress={() => this.incorrect()} />
+
+					<Button
+						title='Correct'
+						color='green'
+						onPress={() => this.correct()} />
+
+				</View>}
 
 			</View>
 		);
