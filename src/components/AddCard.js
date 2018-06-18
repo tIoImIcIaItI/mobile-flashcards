@@ -16,7 +16,13 @@ class AddCard extends Component {
 
 	state = {
 		question: '',
-		answer: ''
+		answer: '',
+		canSubmit: false
+	};
+
+	canSubmit = (question, answer) => {
+		return question && question.length > 0 && 
+			answer && answer.length > 0 ;
 	};
 
 	onSubmit = ({ title }) => {
@@ -35,6 +41,7 @@ class AddCard extends Component {
 
 	render() {
 		const deck = this.props.navigation.getParam('deck', {});
+		const { question, answer, canSubmit } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -45,8 +52,10 @@ class AddCard extends Component {
 
 				<TextInput
 					style={styles.input}
-					onChangeText={question => this.setState({ question })}
-					value={this.state.question}
+					onChangeText={question => this.setState({ 
+						question,
+						canSubmit: this.canSubmit(question, answer) })}
+					value={question}
 				/>
 
 				<Text>
@@ -55,12 +64,15 @@ class AddCard extends Component {
 
 				<TextInput
 					style={styles.input}
-					onChangeText={answer => this.setState({ answer })}
-					value={this.state.answer}
+					onChangeText={answer => this.setState({ 
+						answer,
+						canSubmit: this.canSubmit(question, answer) })}
+					value={answer}
 				/>
 
 				<Button
 					title='Add'
+					disabled={!canSubmit}
 					onPress={() => this.onSubmit(deck)}
 				/>
 

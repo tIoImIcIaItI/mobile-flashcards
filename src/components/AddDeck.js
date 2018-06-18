@@ -14,7 +14,8 @@ class AddDeck extends Component {
 	};
 
 	state = {
-		title: ''
+		title: '',
+		canSubmit: false
 	};
 
 	onSubmit = () => {
@@ -27,6 +28,7 @@ class AddDeck extends Component {
 	};
 
 	render() {
+		const { title, canSubmit } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -37,12 +39,15 @@ class AddDeck extends Component {
 
 				<TextInput
 					style={styles.input}
-					onChangeText={title => this.setState({ title })}
-					value={this.state.title}
+					onChangeText={title => this.setState({ 
+						title, 
+						canSubmit: title && title.length > 0 })}
+					value={title}
 				/>
 
 				<Button
 					title='Create'
+					disabled={!canSubmit}
 					onPress={this.onSubmit}
 				/>
 
