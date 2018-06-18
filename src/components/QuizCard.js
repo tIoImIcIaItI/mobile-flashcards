@@ -8,57 +8,41 @@ import styles from '../styles/quiz-card';
 // an option to view the question (flips the card)
 // a "Correct" button
 // an "Incorrect" button
-class QuizCard extends Component {
+const QuizCard = (props)  => {
+	const {
+		showingQuestion,
+		curCardNumber, totalCardNumbers,
+		question, answer,
+		flipCard
+	} = props;
 
-	static propTypes = {
-		curCardNumber: PropTypes.number.isRequired,
-		totalCardNumbers: PropTypes.number.isRequired,
-		question: PropTypes.string.isRequired,
-		answer: PropTypes.string.isRequired
-	};
+	return (
+		<View style={styles.container}>
 
-	state = {
-		showingQuestion: true
-	};
+			<Text style={styles.progress}>
+				{`${curCardNumber} / ${totalCardNumbers}`}
+			</Text>
 
-	toggleContent = () => {
-		this.setState({
-			showingQuestion: !this.state.showingQuestion
-		});
-	};
+			<Text style={styles.content}>
+				{showingQuestion ? question : answer}
+			</Text>
 
-	render() {
-		const { showingQuestion } = this.state;
+			<Button
+				title={showingQuestion ? 'show answer' : 'show question'}
+				onPress={() => flipCard()} />
 
-		const {
-			curCardNumber, totalCardNumbers,
-			question, answer
-		} = this.props;
-
-		const content =
-			showingQuestion ? question : answer;
-
-		const title =
-			showingQuestion ? 'show answer' : 'show question';
-
-		return (
-			<View style={styles.container}>
-
-				<Text style={styles.progress}>
-					{`${curCardNumber} / ${totalCardNumbers}`}
-				</Text>
-
-				<Text style={styles.content}>
-					{content}
-				</Text>
-
-				<Button
-					title={title}
-					onPress={() => this.toggleContent()} />
-
-			</View>
-		);
-	}
+		</View>
+	);
 }
+
+QuizCard.propTypes = {
+	showingQuestion: PropTypes.bool.isRequired,
+	curCardNumber: PropTypes.number.isRequired,
+	totalCardNumbers: PropTypes.number.isRequired,
+	question: PropTypes.string.isRequired,
+	answer: PropTypes.string.isRequired,
+
+	flipCard: PropTypes.func.isRequired
+};
 
 export default QuizCard;

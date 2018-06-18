@@ -1,196 +1,92 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../actions/index';
-import { clearNotification } from '../notifications/index';
-import DataStore from '../data/DataStore';
+import PropTypes from 'prop-types';
 import { Text, View, Button } from 'react-native';
 import QuizCard from './QuizCard';
 import styles from '../styles/quiz';
 
-// displays a card question
-// an option to view the answer (flips the card)
-// an option to view the question (flips the card)
-// a "Correct" button
-// an "Incorrect" button
-// the number of cards left in the quiz
-// Displays the percentage correct once the quiz is complete
-class Quiz extends Component {
+const Quiz = (props) => {
+    const {
+        deck,
+        curCard,
+        
+        totalCardNumbers,
+        percentCorrect,
+        percentComplete,
+        isComplete,
+        curCardNumber,
+        showingQuestion,
+        
+        flipCard,
+        processAnswer,
+        restartQuiz,
+        goBack
+    } = props;
 
-	constructor(props) {
-		super(props);
+    const complete = Math.trunc(percentComplete);
+    const correct = Math.trunc(Math.round(percentCorrect));
 
-		this.state =
-			this.buildInitialState(
-				props.current.deck);
-	}
+    return (
+        <View style={styles.container}>
 
-	buildInitialState = (deck) => ({
-		deck,
-		curCard: deck.questions.length > 0 ? deck.questions[0] : null,
-		curCardNumber: 1,
-		totalCardNumbers: deck.questions.length,
-		numCorrect: 0,
-		numAnswered: 0,
-		percentComplete: 0.0,
-		percentCorrect: 100.0
-	});
+            {!isComplete && <View style={styles.progressContainer}>
+                <Text>{`${complete} % complete`}</Text>
 
-	static navigationOptions = ({ navigation }) => ({
-		title: `${navigation.getParam('deck', {}).title} Quiz`
-	});
+                <Text>{`${correct} % correct`}</Text>
+            </View>}
 
-	completeQuiz = (results) => {
+            {curCard && <QuizCard
+                showingQuestion={showingQuestion}
+                curCardNumber={curCardNumber}
+                totalCardNumbers={totalCardNumbers}
+                question={curCard.question}
+                answer={curCard.answer}
+                flipCard={flipCard} />}
 
-		DataStore.saveQuiz(results);
+            {curCard && <View style={styles.assessmentContainer}>
+                <Button
+                    title='Incorrect'
+                    color='#721c24'
+                    onPress={() => processAnswer(false)} />
 
-		this.props.completeQuiz(results);
+                <Button
+                    title='Correct'
+                    color='#155724'
+                    onPress={() => processAnswer(true)} />
+            </View>}
 
-		clearNotification();
-	};
+            {isComplete && <View style={styles.scoreContainer}>
+                <Text style={styles.finalScore}>{`${correct} %`}</Text>
+            </View>}
 
-	correct = () => {
-		const { deck, totalCardNumbers } = this.state;
-		let { curCard, curCardNumber, numCorrect, numAnswered } = this.state;
+            {isComplete && <View style={styles.quizCompleteOptionsContainer}>
+                <Button
+                    title='Restart Quiz'
+                    onPress={() => restartQuiz(deck)} />
 
-		numCorrect += 1;
-		numAnswered += 1;
+                <Button
+                    title='Back to Deck'
+                    onPress={() => goBack()} />
+            </View>}
 
-		const percentCorrect = numCorrect / numAnswered * 100.0;
-		const percentComplete = numAnswered / totalCardNumbers * 100.0;
+        </View>
+    );
+};
 
-		if (curCardNumber < totalCardNumbers) {
+Quiz.propTypes = {
+    deck: PropTypes.object.isRequired,
+    curCard: PropTypes.object/*.isOptional*/,
 
-			curCardNumber += 1;
-			curCard = deck.questions[curCardNumber - 1];
+    totalCardNumbers: PropTypes.number.isRequired,
+    percentCorrect: PropTypes.number.isRequired,
+    percentComplete: PropTypes.number.isRequired,
+    isComplete: PropTypes.bool.isRequired,
+    curCardNumber: PropTypes.number.isRequired,
+    showingQuestion: PropTypes.bool.isRequired,
+    
+    flipCard: PropTypes.func.isRequired,
+    processAnswer: PropTypes.func.isRequired,
+    restartQuiz: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired
+};
 
-			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered,
-				percentCorrect, percentComplete,
-			});
-		} else {
-
-			curCard = null;
-			const completedOn = Date.now();
-
-			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered,
-				percentCorrect, percentComplete, completedOn
-			});
-
-			this.completeQuiz({
-				title: deck.title,
-				percentCorrect,
-				completedOn
-			});
-		}
-	};
-
-	incorrect = () => {
-		const { deck, totalCardNumbers, numCorrect } = this.state;
-		let { curCard, curCardNumber, numAnswered } = this.state;
-
-		numAnswered += 1;
-
-		const percentCorrect = numCorrect / numAnswered * 100.0;
-		const percentComplete = numAnswered / totalCardNumbers * 100.0;
-
-		if (curCardNumber < totalCardNumbers) {
-
-			curCardNumber += 1;
-			curCard = deck.questions[curCardNumber - 1];
-
-			this.setState({
-				curCard, curCardNumber, numAnswered,
-				percentCorrect, percentComplete,
-			});
-		} else {
-
-			curCard = null;
-			const completedOn = Date.now();
-
-			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered,
-				percentCorrect, percentComplete, completedOn
-			});
-
-			this.completeQuiz({
-				title: deck.title,
-				percentCorrect,
-				completedOn
-			});
-		}
-	};
-
-	restartQuiz = (deck) => {
-		this.setState(
-			this.buildInitialState(deck));
-	};
-
-	goBack = () => {
-		this.props.navigation.pop();
-	};
-
-	render() {
-		if (!this.props.current)
-			return (<View />);
-
-		const {
-			deck,
-			curCard,
-			curCardNumber,
-			totalCardNumbers,
-			percentComplete,
-			percentCorrect,
-			completedOn } = this.state;
-
-		return (
-			<View style={styles.container}>
-
-				{curCard && <Button
-					title='Restart'
-					onPress={() => this.restartQuiz(deck)} />}
-
-				<View style={styles.progressContainer}>
-					<Text>{`${percentComplete} % complete`}</Text>
-
-					<Text>{`${percentCorrect} % correct`}</Text>
-				</View>
-
-				{curCard && <QuizCard
-					curCardNumber={curCardNumber}
-					totalCardNumbers={totalCardNumbers}
-					question={curCard.question}
-					answer={curCard.answer} />}
-
-				{curCard && <View style={styles.assessmentContainer}>
-
-					<Button
-						title='Incorrect'
-						color='red'
-						onPress={() => this.incorrect()} />
-
-					<Button
-						title='Correct'
-						color='green'
-						onPress={() => this.correct()} />
-
-				</View>}
-
-				{completedOn && <Button
-					title='Back to Deck'
-					onPress={() => this.goBack()} />}
-
-			</View>
-		);
-	}
-}
-
-const mapStateToProps = (state, { navigation }) => ({
-	current: (state.quizes || {}).current
-});
-
-const mapDispatchToProps = (dispatch) =>
-	bindActionCreators(ActionCreators, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+export default Quiz;

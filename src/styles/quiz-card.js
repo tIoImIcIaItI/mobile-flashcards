@@ -10,7 +10,8 @@ export default styles = StyleSheet.create({
 	},
 	progress: {
 		margin: 4,
-		fontSize: 12
+		fontSize: 12,
+		textAlign: 'center'
 	},
 	content: {
 		margin: 16,

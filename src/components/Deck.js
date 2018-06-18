@@ -19,7 +19,7 @@ class Deck extends Component {
 
 		this.props.startNewQuiz(deck);
 
-		navigation.navigate('Quiz', { deck });
+		navigation.navigate('QuizContainer', { deck });
 	};
 
 	render() {
