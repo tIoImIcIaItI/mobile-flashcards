@@ -51,8 +51,8 @@ class Decks extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	decks: (state.decks || {}).decks
+const mapStateToProps = ({ decks }) => ({
+	decks: (decks || {}).decks
 });
 
 const mapDispatchToProps = (dispatch) =>
