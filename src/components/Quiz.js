@@ -71,16 +71,17 @@ class Quiz extends Component {
 		} else {
 
 			curCard = null;
+			const completedOn = Date.now();
 
 			this.setState({
 				curCard, curCardNumber, numCorrect, numAnswered,
-				percentCorrect, percentComplete,
+				percentCorrect, percentComplete, completedOn
 			});
 
 			this.completeQuiz({
 				title: deck.title,
 				percentCorrect,
-				completedOn: Date.now()
+				completedOn
 			});
 		}
 	};
@@ -106,16 +107,17 @@ class Quiz extends Component {
 		} else {
 
 			curCard = null;
+			const completedOn = Date.now();
 
 			this.setState({
 				curCard, curCardNumber, numCorrect, numAnswered,
-				percentCorrect, percentComplete,
+				percentCorrect, percentComplete, completedOn
 			});
 
 			this.completeQuiz({
 				title: deck.title,
 				percentCorrect,
-				completedOn: Date.now()
+				completedOn
 			});
 		}
 	};
@@ -123,6 +125,10 @@ class Quiz extends Component {
 	restartQuiz = (deck) => {
 		this.setState(
 			this.buildInitialState(deck));
+	};
+
+	goBack = () => {
+		this.props.navigation.pop();
 	};
 
 	render() {
@@ -135,7 +141,8 @@ class Quiz extends Component {
 			curCardNumber,
 			totalCardNumbers,
 			percentComplete,
-			percentCorrect } = this.state;
+			percentCorrect,
+			completedOn } = this.state;
 
 		return (
 			<View style={styles.container}>
@@ -169,6 +176,10 @@ class Quiz extends Component {
 						onPress={() => this.correct()} />
 
 				</View>}
+
+				{completedOn && <Button
+					title='Back to Deck'
+					onPress={() => this.goBack()} />}
 
 			</View>
 		);
