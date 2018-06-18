@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
 		height: '100%'
 	},
 	progressContainer: {
-		
+
 	},
 	assessmentContainer: {
 		flex: 1,

@@ -27,7 +27,7 @@ export const setNotification = (time, repeat) =>
 			if (data === null) {
 				Permissions.
 					askAsync(Permissions.NOTIFICATIONS).
-					then(({status}) => {
+					then(({ status }) => {
 						if (status === 'granted') {
 							Notifications.
 								cancelAllScheduledNotificationsAsync().
@@ -39,7 +39,7 @@ export const setNotification = (time, repeat) =>
 								then(() => DataStore.
 									setNotification(true));
 						}
-					})
+					});
 			}
 		}).
 		catch(console.error);

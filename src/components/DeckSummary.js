@@ -6,26 +6,26 @@ import styles from '../styles/deck-summary';
 // displays the number of cards in each deck
 class DeckSummary extends Component {
 
-  render() {
+	render() {
 
-    const { deck, onView } = this.props;
-    const { title, questions } = deck;
+		const { deck, onView } = this.props;
+		const { title, questions } = deck;
 
-    return (
-      <View style={styles.item}>
+		return (
+			<View style={styles.item}>
 
-        <Text style={styles.title}>{title}</Text>
+				<Text style={styles.title}>{title}</Text>
 
-        <Text style={styles.count}>{(questions || []).length} Cards</Text>
+				<Text style={styles.count}>{(questions || []).length} Cards</Text>
 
-        <Button
-          title={`View ${title}`}
-          onPress={onView}
-        />
+				<Button
+					title={`View ${title}`}
+					onPress={onView}
+				/>
 
-      </View>
-    );
-  }
+			</View>
+		);
+	}
 }
 
 export default DeckSummary;

@@ -14,28 +14,28 @@ import AppInit from './src/components/AppInit';
 // Users should receive a notification to remind themselves to study if they haven't already for that day.
 
 const loggerMiddleware = createLogger({
-  predicate: (getState, action) => __DEV__
+	predicate: (getState, action) => __DEV__
 });
 
 const configureStore = (initialState) =>
-  createStore(
-    reducer,
-    initialState,
-    compose(
-      applyMiddleware(
-        thunkMiddleware,
-        loggerMiddleware))
-  );
+	createStore(
+		reducer,
+		initialState,
+		compose(
+			applyMiddleware(
+				thunkMiddleware,
+				loggerMiddleware))
+	);
 
 export default class App extends Component {
 
-  store = configureStore({ });
+	store = configureStore({});
 
-  render() {
-    return (
-      <Provider store={this.store}>
-        <AppInit />
-      </Provider>
-    );
-  }
+	render() {
+		return (
+			<Provider store={this.store}>
+				<AppInit />
+			</Provider>
+		);
+	}
 }

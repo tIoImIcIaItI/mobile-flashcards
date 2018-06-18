@@ -12,7 +12,7 @@ const quizes = (state = {}, action) => {
 		case QUIZ_COMPLETED: {
 			const quiz = action.quiz;
 
-			const title = 
+			const title =
 				quiz.title;
 
 			const day = new Date(quiz.completedOn).
@@ -21,14 +21,14 @@ const quizes = (state = {}, action) => {
 
 			const results = {
 				completedOn: quiz.completedOn,
-				percentCorrect: quiz.percentCorrect,
+				percentCorrect: quiz.percentCorrect
 			};
 
 			const res = { ...state };
 			res.completed = { ...res.completed };
 			res.completed[day] = { ...res.completed[day] };
-			res.completed[day][title] = res.completed[day][title] ? 
-				[ ...res.completed[day][title] ] : [];
+			res.completed[day][title] = res.completed[day][title] ?
+				[...res.completed[day][title]] : [];
 			res.completed[day][title].push(results);
 			return res;
 		}

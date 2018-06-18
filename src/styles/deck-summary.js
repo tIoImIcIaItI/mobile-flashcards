@@ -10,11 +10,11 @@ export default styles = StyleSheet.create({
 		fontWeight: '500',
 		padding: 10,
 		fontSize: 16,
-		height: 44,
+		height: 44
 	},
 	count: {
 		padding: 10,
 		fontSize: 16,
-		height: 44,
-	},
+		height: 44
+	}
 });

@@ -10,47 +10,47 @@ import styles from '../styles/quiz-card';
 // an "Incorrect" button
 class QuizCard extends Component {
 
-    static propTypes = {
-        curCardNumber: PropTypes.number.isRequired,
-        totalCardNumbers: PropTypes.number.isRequired,
-        question: PropTypes.string.isRequired,
-        answer: PropTypes.string.isRequired
-    };
+	static propTypes = {
+		curCardNumber: PropTypes.number.isRequired,
+		totalCardNumbers: PropTypes.number.isRequired,
+		question: PropTypes.string.isRequired,
+		answer: PropTypes.string.isRequired
+	};
 
-    state = {
-        showingQuestion: true
-    };
+	state = {
+		showingQuestion: true
+	};
 
-    toggleContent = () => {
-        this.setState({
-            showingQuestion: !this.state.showingQuestion
-        });
-    };
+	toggleContent = () => {
+		this.setState({
+			showingQuestion: !this.state.showingQuestion
+		});
+	};
 
 	render() {
-        const { showingQuestion } = this.state;
+		const { showingQuestion } = this.state;
 
-		const { 
-            curCardNumber, totalCardNumbers,
+		const {
+			curCardNumber, totalCardNumbers,
 			question, answer
-        } = this.props;
+		} = this.props;
 
-        const content = 
-            showingQuestion ? question : answer;
+		const content =
+			showingQuestion ? question : answer;
 
-        const title = 
-            showingQuestion ? 'show answer' : 'show question';
+		const title =
+			showingQuestion ? 'show answer' : 'show question';
 
 		return (
-            <View style={styles.container}>
+			<View style={styles.container}>
 
-                <Text style={styles.progress}>
-                    {`${curCardNumber} / ${totalCardNumbers}`}
-                </Text>
+				<Text style={styles.progress}>
+					{`${curCardNumber} / ${totalCardNumbers}`}
+				</Text>
 
-                <Text style={styles.content}>
-                    {content}
-                </Text>
+				<Text style={styles.content}>
+					{content}
+				</Text>
 
 				<Button
 					title={title}
@@ -60,5 +60,5 @@ class QuizCard extends Component {
 		);
 	}
 }
- 
+
 export default QuizCard;

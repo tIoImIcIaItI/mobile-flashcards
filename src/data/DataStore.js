@@ -12,7 +12,7 @@ const objectFromKeyValues = (entries) =>
 	}), {});
 
 const parseValue = (kvp = ['', '']) =>
-	[kvp[0], JSON.parse(kvp[1])]
+	[kvp[0], JSON.parse(kvp[1])];
 
 const dateKeyFrom = (value) => 
 	new Date(value).
@@ -112,7 +112,7 @@ class DataStore {
 
 				const results = {
 					completedOn: quiz.completedOn,
-					percentCorrect: quiz.percentCorrect,
+					percentCorrect: quiz.percentCorrect
 				};
 
 				quizes = quizes || {};

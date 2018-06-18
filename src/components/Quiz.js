@@ -19,11 +19,11 @@ class Quiz extends Component {
 
 	constructor(props) {
 		super(props);
-	
-		this.state = 
+
+		this.state =
 			this.buildInitialState(
 				props.current.deck);
-	  }
+	}
 
 	buildInitialState = (deck) => ({
 		deck,
@@ -54,7 +54,7 @@ class Quiz extends Component {
 		let { curCard, curCardNumber, numCorrect, numAnswered } = this.state;
 
 		numCorrect += 1;
-		numAnswered +=1;
+		numAnswered += 1;
 
 		const percentCorrect = numCorrect / numAnswered * 100.0;
 		const percentComplete = numAnswered / totalCardNumbers * 100.0;
@@ -65,7 +65,7 @@ class Quiz extends Component {
 			curCard = deck.questions[curCardNumber - 1];
 
 			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered, 
+				curCard, curCardNumber, numCorrect, numAnswered,
 				percentCorrect, percentComplete,
 			});
 		} else {
@@ -73,10 +73,10 @@ class Quiz extends Component {
 			curCard = null;
 
 			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered, 
+				curCard, curCardNumber, numCorrect, numAnswered,
 				percentCorrect, percentComplete,
 			});
-			
+
 			this.completeQuiz({
 				title: deck.title,
 				percentCorrect,
@@ -89,7 +89,7 @@ class Quiz extends Component {
 		const { deck, totalCardNumbers, numCorrect } = this.state;
 		let { curCard, curCardNumber, numAnswered } = this.state;
 
-		numAnswered +=1;
+		numAnswered += 1;
 
 		const percentCorrect = numCorrect / numAnswered * 100.0;
 		const percentComplete = numAnswered / totalCardNumbers * 100.0;
@@ -100,7 +100,7 @@ class Quiz extends Component {
 			curCard = deck.questions[curCardNumber - 1];
 
 			this.setState({
-				curCard, curCardNumber, numAnswered, 
+				curCard, curCardNumber, numAnswered,
 				percentCorrect, percentComplete,
 			});
 		} else {
@@ -108,7 +108,7 @@ class Quiz extends Component {
 			curCard = null;
 
 			this.setState({
-				curCard, curCardNumber, numCorrect, numAnswered, 
+				curCard, curCardNumber, numCorrect, numAnswered,
 				percentCorrect, percentComplete,
 			});
 
@@ -128,8 +128,8 @@ class Quiz extends Component {
 	render() {
 		if (!this.props.current)
 			return (<View />);
-		
-		const { 
+
+		const {
 			deck,
 			curCard,
 			curCardNumber,
@@ -143,14 +143,14 @@ class Quiz extends Component {
 				{curCard && <Button
 					title='Restart'
 					onPress={() => this.restartQuiz(deck)} />}
-				
+
 				<View style={styles.progressContainer}>
 					<Text>{`${percentComplete} % complete`}</Text>
 
 					<Text>{`${percentCorrect} % correct`}</Text>
 				</View>
 
-				{curCard && <QuizCard 
+				{curCard && <QuizCard
 					curCardNumber={curCardNumber}
 					totalCardNumbers={totalCardNumbers}
 					question={curCard.question}
@@ -180,6 +180,6 @@ const mapStateToProps = (state, { navigation }) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(ActionCreators, dispatch);
+	bindActionCreators(ActionCreators, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

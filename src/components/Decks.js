@@ -8,54 +8,54 @@ import styles from '../styles/decks';
 
 class Decks extends Component {
 
-  static navigationOptions = {
-    title: 'Decks'
-  };
+	static navigationOptions = {
+		title: 'Decks'
+	};
 
-  renderItem = ({ item }) => {
-    const { navigation } = this.props;
-    const deck = item.value;
+	renderItem = ({ item }) => {
+		const { navigation } = this.props;
+		const deck = item.value;
 
-    return (
-      <DeckSummary
-        key={deck.title}
-        deck={deck}
-        onView={() => navigation.navigate('Deck', { deck })}
-      />);
-  };
+		return (
+			<DeckSummary
+				key={deck.title}
+				deck={deck}
+				onView={() => navigation.navigate('Deck', { deck })}
+			/>);
+	};
 
-  render() {
-    const { navigation, decks, getDecks } = this.props;
+	render() {
+		const { navigation, decks, getDecks } = this.props;
 
-    const items =
-      Object.entries(decks || {}).
-        map(e => ({ key: e[0], value: e[1] }));
+		const items =
+			Object.entries(decks || {}).
+				map(e => ({ key: e[0], value: e[1] }));
 
-    return (
-      <View style={styles.container}>
+		return (
+			<View style={styles.container}>
 
-        <Button
-          style={styles.newDeck}
-          title='New Deck'
-          onPress={() => navigation.navigate('AddDeck')}
-        />
+				<Button
+					style={styles.newDeck}
+					title='New Deck'
+					onPress={() => navigation.navigate('AddDeck')}
+				/>
 
-        <FlatList
-          style={styles.decksList}
-          data={items}
-          renderItem={this.renderItem}
-        />
+				<FlatList
+					style={styles.decksList}
+					data={items}
+					renderItem={this.renderItem}
+				/>
 
-      </View>
-    );
-  }
+			</View>
+		);
+	}
 }
 
 const mapStateToProps = (state) => ({
-  decks: (state.decks || {}).decks
+	decks: (state.decks || {}).decks
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(ActionCreators, dispatch);
+	bindActionCreators(ActionCreators, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Decks);

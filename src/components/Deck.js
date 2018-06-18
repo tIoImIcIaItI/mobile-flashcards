@@ -16,7 +16,7 @@ class Deck extends Component {
 	});
 
 	startQuiz = (navigation, deck) => {
-		
+
 		this.props.startNewQuiz(deck);
 
 		navigation.navigate('Quiz', { deck });
@@ -29,25 +29,21 @@ class Deck extends Component {
 		return (
 			<View style={styles.container}>
 
-				{/*<Text>
-					{deck.title}
-				</Text>*/}
-
 				<Text>
 					{questions.length} card{questions.length !== 1 && 's'}
 				</Text>
 
 				<View style={styles.btn}>
-				<Button
-					title='Start Quiz'
-					disabled={questions.length < 1}
-					onPress={() => this.startQuiz(navigation, deck)} />
+					<Button
+						title='Start Quiz'
+						disabled={questions.length < 1}
+						onPress={() => this.startQuiz(navigation, deck)} />
 				</View>
 
 				<View style={styles.btn}>
-				<Button
-					title='Add Card'
-					onPress={() => navigation.navigate('AddCard', { deck })} />
+					<Button
+						title='Add Card'
+						onPress={() => navigation.navigate('AddCard', { deck })} />
 				</View>
 
 			</View>
@@ -56,10 +52,10 @@ class Deck extends Component {
 }
 
 const mapStateToProps = (state, { navigation }) => ({
-	deck: (state.decks || {}).decks[navigation.getParam('deck', {}).title] 
+	deck: (state.decks || {}).decks[navigation.getParam('deck', {}).title]
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(ActionCreators, dispatch);
-  
+	bindActionCreators(ActionCreators, dispatch);
+
 export default connect(mapStateToProps, mapDispatchToProps)(Deck);

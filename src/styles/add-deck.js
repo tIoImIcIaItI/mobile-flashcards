@@ -5,12 +5,11 @@ export default styles = StyleSheet.create({
 		flex: 1,
 		margin: 16,
 		padding: 16,
-		// backgroundColor: '#fff',
 		alignItems: 'stretch',
-		justifyContent: 'flex-start',
+		justifyContent: 'flex-start'
 	},
 	input: {
 		height: 40,
 		marginBottom: 16
-	},
+	}
 });

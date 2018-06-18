@@ -19,7 +19,7 @@ const decks = (state = {}, action) => {
 			const res = { ...state };
 			res.decks = { ...res.decks };
 			res.decks[action.title] = { ...res.decks[action.title] };
-			res.decks[action.title].questions = [ ...res.decks[action.title].questions ];
+			res.decks[action.title].questions = [...res.decks[action.title].questions];
 			res.decks[action.title].questions.push(action.card);
 			return res;
 		}

@@ -6,9 +6,9 @@ import AddCard from './AddCard';
 import Quiz from './Quiz';
 
 export default Navigator = createStackNavigator({
-    Decks: { screen: Decks },
-    Deck: { screen: Deck },
-    AddDeck: { screen: AddDeck },
-    AddCard: { screen: AddCard },
-    Quiz: { screen: Quiz },
-  });
+	Decks: { screen: Decks },
+	Deck: { screen: Deck },
+	AddDeck: { screen: AddDeck },
+	AddCard: { screen: AddCard },
+	Quiz: { screen: Quiz },
+});

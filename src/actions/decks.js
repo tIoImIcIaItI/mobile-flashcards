@@ -1,7 +1,7 @@
 import DataStore from '../data/DataStore';
 import { DECKS_LOADED, DECK_ADDED, CARD_ADDED } from './types';
 
-export const getDecks = () => (dispatch) => 
+export const getDecks = () => (dispatch) =>
 	DataStore.
 		getDecks().
 		then(decks => dispatch(decksLoaded(decks))).
@@ -14,7 +14,7 @@ export function decksLoaded(decks) {
 	};
 }
 
-export const newDeck = (title) => (dispatch) => 
+export const newDeck = (title) => (dispatch) =>
 	DataStore.
 		saveDeckTitle(title).
 		then(() => DataStore.getDeck(title)).
@@ -28,7 +28,7 @@ export function deckAdded(title, deck) {
 	};
 }
 
-export const addCardToDeck = (title, card) => (dispatch) => 
+export const addCardToDeck = (title, card) => (dispatch) =>
 	DataStore.
 		addCardToDeck(title, card).
 		then(() => dispatch(cardAdded(title, card))).
