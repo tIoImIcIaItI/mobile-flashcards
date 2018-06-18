@@ -14,6 +14,7 @@ This project was bootstrapped with [Create React Native App](https://github.com/
 * Users should receive a notification to remind themselves to study if they haven't already for that day.
 
 ## Quick Start
+The app has been tested *only* on the Android Studio default emulator (Nexus 5).
 1. `yarn install`
 2. `yarn run android`
 
